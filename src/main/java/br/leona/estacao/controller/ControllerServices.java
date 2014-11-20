@@ -9,19 +9,46 @@ import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import br.leona.hardware.controller.PTZController;
+
 /**
  *
- * @author Admin_2
- */
+ * @author leona
+ **/
 @WebService(serviceName = "ControllerServices")
 public class ControllerServices {
+
     PTZController pantilt = new PTZController();
-    /**
-     * This is a sample web service operation
-     */
+
     @WebMethod(operationName = "MoverEsquerda")
     public int moverEsquerda(@WebParam(name = "graus") String graus) {
         return pantilt.left(Integer.parseInt(graus));
     }
-    
+
+    @WebMethod(operationName = "MoverCima")
+    public int MoverCima(@WebParam(name = "graus") int graus) {
+        return pantilt.up(graus);
+    }
+
+    @WebMethod(operationName = "MoverDireita")
+    public int MoverDireita(@WebParam(name = "graus") int graus) {
+        return pantilt.right(graus);
+    }
+
+    @WebMethod(operationName = "MoverBaixo")
+    public int MoverBaixo(@WebParam(name = "graus") int graus) {
+        //TODO write your implementation code here:
+        return pantilt.down(graus);
+    }
+
+    @WebMethod(operationName = "LigarDesligarCamera")
+    public int LigarDesligarCamera(@WebParam(name = "valor") int valor) {
+        return pantilt.camera(valor);
+
+    }
+
+    @WebMethod(operationName = "ResetPantilt")
+    public int ResetPantilt() {
+        return pantilt.reset();
+    }
+
 }
