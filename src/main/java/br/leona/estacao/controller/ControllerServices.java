@@ -20,8 +20,8 @@ public class ControllerServices {
     PTZController pantilt = new PTZController();
 
     @WebMethod(operationName = "MoverEsquerda")
-    public int moverEsquerda(@WebParam(name = "graus") String graus) {
-        return pantilt.left(Integer.parseInt(graus));
+    public int moverEsquerda(@WebParam(name = "graus") int graus) {
+        return pantilt.left(graus);
     }
 
     @WebMethod(operationName = "MoverCima")
