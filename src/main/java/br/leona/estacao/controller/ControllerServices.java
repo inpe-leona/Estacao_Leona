@@ -13,7 +13,8 @@ import br.leona.hardware.controller.PTZController;
 /**
  *
  * @author leona
- **/
+ *
+ */
 @WebService(serviceName = "ControllerServices")
 public class ControllerServices {
 
@@ -48,7 +49,8 @@ public class ControllerServices {
 
     @WebMethod(operationName = "ResetPantilt")
     public int ResetPantilt() {
-        return pantilt.reset();
+        return pantilt.resetPantilt();
+
     }
 
 }
