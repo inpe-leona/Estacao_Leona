@@ -9,9 +9,14 @@ import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import br.leona.hardware.controller.PTZController;
+import br.leona.hardware.camera.CameraController;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.media.CannotRealizeException;
+import javax.media.NoPlayerException;
+
 
 /**
  *
@@ -22,6 +27,8 @@ import java.util.List;
 public class ControllerServices {
 
     PTZController pantilt = new PTZController();
+    CameraController cameraController = new CameraController();
+    
 
     @WebMethod(operationName = "MoverEsquerda")
     public int moverEsquerda(@WebParam(name = "graus") int graus) throws InterruptedException {
@@ -58,6 +65,8 @@ public class ControllerServices {
 
     /**
      * Operação de Web service
+     * @param graus
+     * @return 
      */
     @WebMethod(operationName = "moverAzimute")
     public String moverAzimute(@WebParam(name = "graus") int graus) {        
@@ -66,6 +75,8 @@ public class ControllerServices {
 
     /**
      * Operação de Web service
+     * @param graus
+     * @return 
      */
     @WebMethod(operationName = "moverElevacao")
     public String moverElevacao(@WebParam(name = "graus") int graus) {
@@ -76,7 +87,7 @@ public class ControllerServices {
     public List<String> retornarNomesFotos() {
         List<String> listS = new ArrayList<>();
         // diretório que será listado.  
-        File baseFolder = new File("C:\\ProjetoLeona\\Visualizar\\Evento11122014101708");  
+        File baseFolder = new File("C:\\ProjetoLeona\\Evento11122014101708");  
 
         // obtem a lista de arquivos  
         File[] files = baseFolder.listFiles();  
@@ -89,5 +100,18 @@ public class ControllerServices {
         }  
         return listS;
     }
+
+    /**
+     * Operação de Web service
+     * @param ligarCamera
+     * @return 
+     */
+    @WebMethod(operationName = "Capturar")
+    public String Capturar(@WebParam(name = "ligarCamera") String ligarCamera) throws IOException, NoPlayerException, CannotRealizeException {
+        cameraController.iniciarCamera();
+        cameraController.capturarCamera(ligarCamera);
+        return ligarCamera;
+    }
+
     
 }
