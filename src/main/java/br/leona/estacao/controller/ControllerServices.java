@@ -103,14 +103,31 @@ public class ControllerServices {
 
     /**
      * Operação de Web service
-     * @param ligarCamera
+     * @param capturarImagens
+     * @return 
+     * @throws java.io.IOException 
+     * @throws javax.media.NoPlayerException 
+     * @throws javax.media.CannotRealizeException 
+     */
+    @WebMethod(operationName = "IniciarCaptura")
+    public String Capturar(@WebParam(name = "capturarImagens") String capturarImagens) throws IOException, NoPlayerException, CannotRealizeException {
+        System.out.println("Livia no controller services******************************************");
+        cameraController.iniciarCamera();
+        cameraController.iniciarCaptura(capturarImagens);
+        return capturarImagens;
+    }
+
+    /**
+     * Operação de Web service
+     * @param status
      * @return 
      */
-    @WebMethod(operationName = "Capturar")
-    public String Capturar(@WebParam(name = "ligarCamera") String ligarCamera) throws IOException, NoPlayerException, CannotRealizeException {
-        cameraController.iniciarCamera();
-        cameraController.capturarCamera(ligarCamera);
-        return ligarCamera;
+    @WebMethod(operationName = "PararCaptura")
+    public String PararCaptura(@WebParam(name = "status") String status) {
+        System.out.println("entrei em parar****************************************");
+         cameraController.pararCaptura(status);
+        return status;
+
     }
 
     
