@@ -6,6 +6,7 @@
 package br.leona.estacao.test;
 
 import br.leona.estacao.controller.ControllerServices;
+import br.leona.hardware.model.Servico;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -45,10 +46,20 @@ public class ListFotos {
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
-     @Test
+     //@Test
      public void foto() {
          System.out.println("oi: ");
          List<String> lS = cs.retornarNomesFotos();
          System.out.println("Fotos: "+lS);
      }
+     
+     @Test
+     public void listaServicos() {    
+        List<Servico> list = cs.retornarListaStatus();
+        assertNotNull(list);  
+        for(int i=0; i < list.size(); i++){
+            System.out.println(list.get(0).getName());
+            System.out.println(list.get(0).getStatus());
+        }
+    }
 }

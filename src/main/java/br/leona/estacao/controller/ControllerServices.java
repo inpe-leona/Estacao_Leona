@@ -10,12 +10,16 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import br.leona.hardware.controller.PTZController;
 import br.leona.hardware.camera.CameraController;
+import br.leona.hardware.model.Servico;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.media.CannotRealizeException;
 import javax.media.NoPlayerException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 
 /**
@@ -28,7 +32,6 @@ public class ControllerServices {
 
     PTZController pantilt = new PTZController();
     CameraController cameraController = new CameraController();
-    
 
     @WebMethod(operationName = "MoverEsquerda")
     public int moverEsquerda(@WebParam(name = "graus") int graus) throws InterruptedException {
@@ -130,5 +133,23 @@ public class ControllerServices {
 
     }
 
+    @WebMethod(operationName = "retornarListaStatus")
+    public List<Servico> retornarListaStatus() {
+        List<Servico> list = new ArrayList<>();
+        
+        try { 
+		File file = new File("c:/hardware/serialPort.xml");
+		JAXBContext jaxbContext = JAXBContext.newInstance(Servico.class);
+ 
+		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+		Servico service = (Servico) jaxbUnmarshaller.unmarshal(file);
+		System.out.println(service);
+                list.add(service);
+	  } catch (JAXBException e) {
+		e.printStackTrace();
+	  }        
+ 
+        return list;
+    }
     
 }
