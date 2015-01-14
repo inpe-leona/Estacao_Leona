@@ -10,6 +10,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import br.leona.hardware.controller.PTZController;
 import br.leona.hardware.camera.CameraController;
+import br.leona.hardware.file.FileXML;
 import br.leona.hardware.model.Servico;
 import java.io.File;
 import java.io.IOException;
@@ -135,17 +136,9 @@ public class ControllerServices {
     @WebMethod(operationName = "retornarListaStatus")
     public List<Servico> retornarListaStatus() {
         List<Servico> list = new ArrayList<>();        
-        try { 
-		File file = new File("c:/hardware/serialPort.xml");
-		JAXBContext jaxbContext = JAXBContext.newInstance(Servico.class);
- 
-		Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-		Servico service = (Servico) jaxbUnmarshaller.unmarshal(file);
-		System.out.println(service);
-                list.add(service);
-	  } catch (JAXBException e) {
-		e.printStackTrace();
-	  }   
+        FileXML fileXML = new FileXML();
+        Servico servico = fileXML.readFile("c:/hardware/serialPort.xml");
+        list.add(servico);
         return list;
     }
 }
