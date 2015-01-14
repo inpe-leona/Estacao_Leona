@@ -21,7 +21,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-
 /**
  *
  * @author leona
@@ -135,8 +134,7 @@ public class ControllerServices {
 
     @WebMethod(operationName = "retornarListaStatus")
     public List<Servico> retornarListaStatus() {
-        List<Servico> list = new ArrayList<>();
-        
+        List<Servico> list = new ArrayList<>();        
         try { 
 		File file = new File("c:/hardware/serialPort.xml");
 		JAXBContext jaxbContext = JAXBContext.newInstance(Servico.class);
@@ -147,9 +145,7 @@ public class ControllerServices {
                 list.add(service);
 	  } catch (JAXBException e) {
 		e.printStackTrace();
-	  }        
- 
+	  }   
         return list;
     }
-    
 }
