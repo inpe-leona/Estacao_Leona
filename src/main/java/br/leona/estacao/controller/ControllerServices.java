@@ -18,9 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.media.CannotRealizeException;
 import javax.media.NoPlayerException;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 /**
  *
