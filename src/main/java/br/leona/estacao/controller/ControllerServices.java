@@ -16,6 +16,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.media.CannotRealizeException;
 import javax.media.NoPlayerException;
 
@@ -25,11 +27,11 @@ import javax.media.NoPlayerException;
  *
  */
 @WebService(serviceName = "ControllerServices")
-public class ControllerServices {
-
+public class ControllerServices {  
     PTZController pantilt = new PTZController();
     CameraController cameraController = new CameraController();
-
+      
+    
     @WebMethod(operationName = "MoverEsquerda")
     public int moverEsquerda(@WebParam(name = "graus") int graus) throws InterruptedException {
         return pantilt.left(graus);
@@ -56,11 +58,24 @@ public class ControllerServices {
         return pantilt.camera(valor);
 
     }
+        
+    @WebMethod(operationName = "LigarCamera")
+    public int LigarCamera() {
+        int result = pantilt.cameraOn();
+        if(result != 0) System.out.println("ERRO ao LIGAR CAMERA");
+        return result;
+    }
+    
+    @WebMethod(operationName = "DesligarCamera")
+    public int DesligarCamera() {
+        int result = pantilt.cameraOff();
+        if(result != 0) System.out.println("ERRO ao DESLIGAR CAMERA");
+        return result;
+    }
 
     @WebMethod(operationName = "ResetPantilt")
     public int ResetPantilt() throws InterruptedException {
         return pantilt.resetPantilt();
-
     }
 
     /**
@@ -102,32 +117,21 @@ public class ControllerServices {
     }
 
     /**
-     * Operação de Web service
-     * @param capturarImagens
-     * @return 
-     * @throws java.io.IOException 
-     * @throws javax.media.NoPlayerException 
-     * @throws javax.media.CannotRealizeException 
+     * Operação de Web service    
      */
-    @WebMethod(operationName = "IniciarCaptura")
-    public String Capturar(@WebParam(name = "capturarImagens") String capturarImagens) throws IOException, NoPlayerException, CannotRealizeException {
+    @WebMethod
+    public void Capturar()  {
         System.out.println("Livia no controller services******************************************");
-        cameraController.iniciarCamera();
-        cameraController.iniciarCaptura(capturarImagens);
-        return capturarImagens;
+        cameraController.iniciarCaptura();
     }
 
     /**
      * Operação de Web service
-     * @param status
-     * @return 
      */
-    @WebMethod(operationName = "PararCaptura")
-    public String PararCaptura(@WebParam(name = "status") String status) {
+    @WebMethod
+    public void PararCaptura() {
         System.out.println("entrei em parar****************************************");
-         cameraController.pararCaptura(status);
-        return status;
-
+        cameraController.pararCaptura();
     }
 
     @WebMethod(operationName = "retornarListaStatus")
@@ -137,5 +141,24 @@ public class ControllerServices {
         Servico servico = fileXML.readFile("c:/hardware/serialPort.xml");
         list.add(servico);
         return list;
+    }
+    
+    @WebMethod(operationName = "desligar")
+    public int Desligar() {
+        System.out.println("entrei em parar****************************************");
+        return pantilt.close();
+    }
+     
+    @WebMethod(operationName = "ligar")
+    public void Ligar() {   
+        try {
+            cameraController.iniciarCamera();
+        } catch (IOException ex) {
+            Logger.getLogger(ControllerServices.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoPlayerException ex) {
+            Logger.getLogger(ControllerServices.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CannotRealizeException ex) {
+            Logger.getLogger(ControllerServices.class.getName()).log(Level.SEVERE, null, ex);
+        }   
     }
 }
