@@ -26,10 +26,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>br.leona</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>Hardware_Leona</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>jar</type>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>javax</groupId>

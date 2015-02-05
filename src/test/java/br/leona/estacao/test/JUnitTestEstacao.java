@@ -7,9 +7,12 @@ package br.leona.estacao.test;
 
 import br.leona.estacao.controller.ControllerServices;
 import br.leona.hardware.model.Servico;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.media.CannotRealizeException;
+import javax.media.NoPlayerException;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -29,9 +32,9 @@ public class JUnitTestEstacao {
     }
     
     @BeforeClass
-    public static void setUpClass() {
+    public static void setUpClass() throws IOException, NoPlayerException, CannotRealizeException {
         cs = new ControllerServices();   
-        cs.Ligar();        
+        cs.IniciarVideo();        
     }
 
     @AfterClass
@@ -40,9 +43,7 @@ public class JUnitTestEstacao {
 
     @Before
     public void setUp() {
-        //LigarDesligarCamera();
-        ligarCamera();
-        cs.Capturar();
+           //   cs.IniciarCaptura();
         try {
             Thread.sleep(1000);                 //1000 milliseconds is one second.
         } catch(InterruptedException ex) {
@@ -53,10 +54,10 @@ public class JUnitTestEstacao {
 
     @After
     public void tearDown() {
-       cs.PararCaptura();
+       //cs.PararCaptura();
        //LigarDesligarCamera();
-       DesligarCamera();
-       reset();
+      // DesligarCamera();
+      // reset();
     }
     
     //@Test
@@ -68,25 +69,7 @@ public class JUnitTestEstacao {
         }     
     }       
     
-    //@Test
-    public void LigarDesligarCamera()  { // recebe 1 ou 0        
-        if(valor == 0){
-            valor = 1;        
-            try {
-                assertEquals(1, cs.LigarDesligarCamera(valor));
-            } catch (InterruptedException ex) {
-                Logger.getLogger(JUnitTestEstacao.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        else{
-            valor = 0;        
-            try {
-                assertEquals(0, cs.LigarDesligarCamera(valor));
-            } catch (InterruptedException ex) {
-                Logger.getLogger(JUnitTestEstacao.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }        
-    }
+   
     
     //@Test
     public void ligarCamera(){
@@ -97,48 +80,7 @@ public class JUnitTestEstacao {
     public void DesligarCamera(){
        assertEquals(0, cs.DesligarCamera());
     }   
-      
-    @Test
-    public void left() {
-        int graus = 60;
-        try {
-            assertEquals(1, cs.moverEsquerda(graus));
-        } catch (InterruptedException ex) {
-            Logger.getLogger(JUnitTestEstacao.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    @Test
-    public void right() {
-        int graus = 60;
-        try {
-            assertEquals(1, cs.MoverDireita(graus));
-        } catch (InterruptedException ex) {
-            Logger.getLogger(JUnitTestEstacao.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    @Test
-    public void up(){
-        int graus = 30;
-        try {
-            assertEquals(1, cs.MoverCima(graus));
-        } catch (InterruptedException ex) {
-            Logger.getLogger(JUnitTestEstacao.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    @Test
-    public void down() {
-        int graus = 30;
-        try {
-            assertEquals(1, cs.MoverBaixo(graus));
-        } catch (InterruptedException ex) {
-            Logger.getLogger(JUnitTestEstacao.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-        
-    //@Test
+       //@Test
     public void calculo() { 
     int  graus = 22;
         assertEquals(1, cs.moverAzimute(graus));
@@ -149,18 +91,14 @@ public class JUnitTestEstacao {
         assertEquals(1, cs.Desligar());
     }
     
-    
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-     //@Test
+      //@Test
      public void foto() {
          System.out.println("oi: ");
          List<String> lS = cs.retornarNomesFotos();
          System.out.println("Fotos: "+lS);
      }
      
-     @Test
+    // @Test
      public void listaServicos() {    
         List<Servico> list = cs.retornarListaStatus();
         assertNotNull(list);  
@@ -169,5 +107,10 @@ public class JUnitTestEstacao {
             System.out.println(list.get(0).getStatus());
         }
     }
-    
+     
+   //  @Test
+     public void paraCapturar(){
+   //       cs.PararCaptura();
+     }
 }
+

@@ -26,139 +26,129 @@ import javax.media.NoPlayerException;
  * @author leona
  *
  */
+
+
+
 @WebService(serviceName = "ControllerServices")
-public class ControllerServices {  
+public class ControllerServices {
+
+    public ControllerServices(){
+        IniciarVideo();
+        System.out.println("não excluir o construtor"); 
+    }
+    
     PTZController pantilt = new PTZController();
     CameraController cameraController = new CameraController();
-      
-    
-    @WebMethod(operationName = "MoverEsquerda")
-    public int moverEsquerda(@WebParam(name = "graus") int graus) throws InterruptedException {
-        return pantilt.left(graus);
-    }
-
-    @WebMethod(operationName = "MoverCima")
-    public int MoverCima(@WebParam(name = "graus") int graus) throws InterruptedException {
-        return pantilt.up(graus);
-    }
-
-    @WebMethod(operationName = "MoverDireita")
-    public int MoverDireita(@WebParam(name = "graus") int graus) throws InterruptedException {
-        return pantilt.right(graus);
-    }
-
-    @WebMethod(operationName = "MoverBaixo")
-    public int MoverBaixo(@WebParam(name = "graus") int graus) throws InterruptedException {
-        //TODO write your implementation code here:
-        return pantilt.down(graus);
-    }
-
-    @WebMethod(operationName = "LigarDesligarCamera")
-    public int LigarDesligarCamera(@WebParam(name = "valor") int valor) throws InterruptedException {
-        return pantilt.camera(valor);
-
-    }
-        
-    @WebMethod(operationName = "LigarCamera")
-    public int LigarCamera() {
-        int result = pantilt.cameraOn();
-        if(result != 0) System.out.println("ERRO ao LIGAR CAMERA");
-        return result;
-    }
-    
-    @WebMethod(operationName = "DesligarCamera")
-    public int DesligarCamera() {
-        int result = pantilt.cameraOff();
-        if(result != 0) System.out.println("ERRO ao DESLIGAR CAMERA");
-        return result;
-    }
 
     @WebMethod(operationName = "ResetPantilt")
     public int ResetPantilt() throws InterruptedException {
         return pantilt.resetPantilt();
     }
 
-    /**
-     * Operação de Web service
-     * @param graus
-     * @return 
-     */
-    @WebMethod(operationName = "moverAzimute")
-    public String moverAzimute(@WebParam(name = "graus") int graus) {        
-        return Integer.toString(pantilt.calculoAzimuteElevacao(graus, "azimute"));
+    @WebMethod(operationName = "desligarPantilt")
+    public int Desligar() {
+          return pantilt.close();
     }
 
     /**
-     * Operação de Web service
+     * Operação de movimetação do pantilt azimute e elevação.
+     *
      * @param graus
-     * @return 
+     * @return
      */
+    @WebMethod(operationName = "moverAzimute")
+    public String moverAzimute(@WebParam(name = "graus") int graus) {
+        return Integer.toString(pantilt.calculoAzimuteElevacao(graus, "azimute"));
+    }
+
     @WebMethod(operationName = "moverElevacao")
     public String moverElevacao(@WebParam(name = "graus") int graus) {
         return Integer.toString(pantilt.calculoAzimuteElevacao(graus, "elevacao"));
     }
 
-    @WebMethod(operationName = "retornarNomesFotos")
-    public List<String> retornarNomesFotos() {
-        List<String> listS = new ArrayList<>();
-        // diretório que será listado.  
-        File baseFolder = new File("C:\\ProjetoLeona\\Evento11122014101708");  
-
-        // obtem a lista de arquivos  
-        File[] files = baseFolder.listFiles();  
-        for (int i = 0; i < files.length; i++) {  
-            File file = files[i]; 
-            String name = file.getName();  
-                listS.add(name);
-                System.out.println(name); 
-            
-        }  
-        return listS;
-    }
-
-    /**
-     * Operação de Web service    
-     */
-    @WebMethod
-    public void Capturar()  {
-        System.out.println("Livia no controller services******************************************");
-        cameraController.iniciarCaptura();
-    }
-
-    /**
-     * Operação de Web service
-     */
-    @WebMethod
-    public void PararCaptura() {
-        System.out.println("entrei em parar****************************************");
-        cameraController.pararCaptura();
-    }
-
-    @WebMethod(operationName = "retornarListaStatus")
-    public List<Servico> retornarListaStatus() {
-        List<Servico> list = new ArrayList<>();        
-        FileXML fileXML = new FileXML();
-        Servico servico = fileXML.readFile("c:/hardware/serialPort.xml");
-        list.add(servico);
-        return list;
-    }
-    
-    @WebMethod(operationName = "desligar")
-    public int Desligar() {
-        System.out.println("entrei em parar****************************************");
-        return pantilt.close();
-    }
-     
-    @WebMethod(operationName = "ligar")
-    public void Ligar() {   
+    public void IniciarVideo() {
+        System.out.println("ws- iniciar video");
         try {
-            cameraController.iniciarCamera();
+            cameraController.iniciarVideo();
         } catch (IOException ex) {
             Logger.getLogger(ControllerServices.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoPlayerException ex) {
             Logger.getLogger(ControllerServices.class.getName()).log(Level.SEVERE, null, ex);
         } catch (CannotRealizeException ex) {
             Logger.getLogger(ControllerServices.class.getName()).log(Level.SEVERE, null, ex);
-        }   
+        }
     }
+
+
+    /**
+     * Operação para ligar a camera
+     */
+    @WebMethod(operationName = "LigarCamera")
+    public int LigarCamera() {
+          System.out.println("ws - ligar camera");
+        int result = pantilt.cameraOn();
+        if (result != 0) {
+            System.out.println("ERRO ao LIGAR CAMERA");
+        }
+        return 1;
+    }
+
+    /**
+     * Operação para desligar a camera
+     */
+    @WebMethod(operationName = "DesligarCamera")
+    public int DesligarCamera() {
+           System.out.println("ws - desligar camera");
+        int result = pantilt.cameraOff();
+        if (result != 0) {
+            System.out.println("ERRO ao DESLIGAR CAMERA");
+        }
+        return result;
+    }
+
+    /**
+     * Operação para iniciar a captura das imagens
+     */
+    @WebMethod(operationName = "IniciarCaptura")
+    public void IniciarCaptura() throws IOException, NoPlayerException, CannotRealizeException {
+      System.out.println("ws - iniciar captura");
+        cameraController.iniciarCaptura();
+    }
+
+    /**
+     * Operação para parar a captura das imagens
+     */
+    @WebMethod(operationName = "PararCaptura")
+    public void PararCaptura() throws IOException, NoPlayerException, CannotRealizeException {
+        System.out.println("ws - parar captura");
+        cameraController.pararCaptura();
+    }
+
+    @WebMethod(operationName = "retornarNomesFotos")
+    public List<String> retornarNomesFotos() {
+        List<String> listS = new ArrayList<>();
+        // diretório que será listado.  
+        File baseFolder = new File("C:\\ProjetoLeona\\Evento11122014101708");
+
+        // obtem a lista de arquivos  
+        File[] files = baseFolder.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            File file = files[i];
+            String name = file.getName();
+            listS.add(name);
+            System.out.println(name);
+
+        }
+        return listS;
+    }
+
+    @WebMethod(operationName = "retornarListaStatus")
+    public List<Servico> retornarListaStatus() {
+        List<Servico> list = new ArrayList<>();
+        FileXML fileXML = new FileXML();
+        Servico servico = fileXML.readFile("c:/hardware/serialPort.xml");
+        list.add(servico);
+        return list;
+    }
+
 }
