@@ -27,8 +27,6 @@ import javax.media.NoPlayerException;
  *
  */
 
-
-
 @WebService(serviceName = "ControllerServices")
 public class ControllerServices {
 
@@ -52,7 +50,6 @@ public class ControllerServices {
 
     /**
      * Operação de movimetação do pantilt azimute e elevação.
-     *
      * @param graus
      * @return
      */
@@ -78,7 +75,6 @@ public class ControllerServices {
             Logger.getLogger(ControllerServices.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 
     /**
      * Operação para ligar a camera
