@@ -9,8 +9,6 @@ import br.leona.estacao.controller.ControllerServices;
 import br.leona.hardware.model.Servico;
 import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.media.CannotRealizeException;
 import javax.media.NoPlayerException;
 import org.junit.After;
@@ -22,19 +20,18 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Leona_Lenovo
+ * @author Leona
  */
 public class JUnitTestEstacao {    
-    private static ControllerServices cs;
-    private int valor = 0;
+    private static ControllerServices controllServices;  
+    private static int valor = 0;
     
     public JUnitTestEstacao() {
+        controllServices = new ControllerServices();  
     }
     
     @BeforeClass
     public static void setUpClass() throws IOException, NoPlayerException, CannotRealizeException {
-        cs = new ControllerServices();   
-        cs.IniciarVideo();        
     }
 
     @AfterClass
@@ -42,75 +39,76 @@ public class JUnitTestEstacao {
     }
 
     @Before
-    public void setUp() {
-           //   cs.IniciarCaptura();
+    public void setUp() {   
+        ligarCamera();
+    //    controllServices.iniciarVideo();
+        controllServices.iniciarCaptura();
         try {
             Thread.sleep(1000);                 //1000 milliseconds is one second.
         } catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
-        }
-       
+        }     
     }
 
     @After
     public void tearDown() {
-       //cs.PararCaptura();
-       //LigarDesligarCamera();
-      // DesligarCamera();
-      // reset();
+       controllServices.pararCaptura();
+       desligarCamera();
+       //reset();
     }
     
     //@Test
     public void reset(){
-        try {
-            assertEquals(1, cs.ResetPantilt());            
-        } catch (InterruptedException ex) {
-            Logger.getLogger(JUnitTestEstacao.class.getName()).log(Level.SEVERE, null, ex);
-        }     
+       assertEquals(1, controllServices.resetPantilt()); 
     }       
-    
-   
     
     //@Test
     public void ligarCamera(){
-       assertEquals(0, cs.LigarCamera());
+       assertEquals(1, controllServices.ligarCamera());
     }   
     
     //@Test
-    public void DesligarCamera(){
-       assertEquals(0, cs.DesligarCamera());
+    public void desligarCamera(){
+       assertEquals(0, controllServices.desligarCamera());
     }   
        //@Test
     public void calculo() { 
     int  graus = 22;
-        assertEquals(1, cs.moverAzimute(graus));
+        assertEquals(1, controllServices.moverAzimute(graus));
     }
   
     //@Test
     public void close() { // recebe 1 ou 0
-        assertEquals(1, cs.Desligar());
+        assertEquals(1, controllServices.desligar());
     }
     
       //@Test
      public void foto() {
          System.out.println("oi: ");
-         List<String> lS = cs.retornarNomesFotos();
+         List<String> lS = controllServices.retornarNomesFotos();
          System.out.println("Fotos: "+lS);
      }
      
-    // @Test
+     @Test
      public void listaServicos() {    
-        List<Servico> list = cs.retornarListaStatus();
+        List<Servico> list = controllServices.retornarListaStatus();
         assertNotNull(list);  
         for(int i=0; i < list.size(); i++){
             System.out.println(list.get(0).getName());
             System.out.println(list.get(0).getStatus());
         }
+    }     
+   
+    @Test
+    public void moverElevacao(){
+          assertEquals("1", controllServices.moverElevacao(10));
+    }
+    
+     @Test
+    public void moverAzimute(){
+          assertEquals("1", controllServices.moverAzimute(60));
     }
      
-   //  @Test
-     public void paraCapturar(){
-   //       cs.PararCaptura();
-     }
+  
 }
 
