@@ -66,7 +66,7 @@ public class ControllerServices {
     @WebMethod(operationName = "pararCaptura")
     public void pararCaptura()  {
         System.out.println("ws - parar captura");        
-        cameraControll.stopCapture();//.endCapture();//
+        cameraControll.stopCapture();
     }
 
     @WebMethod(operationName = "resetPantilt")
@@ -121,32 +121,47 @@ public class ControllerServices {
         return result;
     }
     
-    @WebMethod(operationName = "retornarNomesFotos")
-    public List<String> retornarNomesFotos() {
-        List<String> listS = new ArrayList<>();
-        // diretório que será listado.  
-        File baseFolder = new File("c:\\ProjetoLeona\\Evento_20150327_143214");
-        // obtem a lista de arquivos  
-        File[] files = baseFolder.listFiles();
-        for (int i = 0; i < files.length; i++) {
-            File file = files[i];
-            String name = file.getName();
-            listS.add(name);
-            System.out.println(name);
-
-        }
-        return listS;
-    }
-
     @WebMethod(operationName = "retornarListaStatus")
     public List<Servico> retornarListaStatus() {
         List<Servico> list = new ArrayList<>();
         FileXML fileXML = new FileXML();
-        Servico pantilt = fileXML.readFile("c:/ProjetoLeona/pantilt.xml");
-        list.add(pantilt);
+        Servico arduino = fileXML.readFile("c:/ProjetoLeona/pantilt.xml");
+        list.add(arduino);
         Servico camera = fileXML.readFile("c:/ProjetoLeona/camera.xml");
         list.add(camera);
         return list;
     }
-
+    
+    @WebMethod(operationName = "retornarNomesFotos")
+    public List<String> retornarNomesFotos(@WebParam(name = "diretorio") String diretorio) {
+        List<String> listS = new ArrayList<>();
+        File baseFolder = new File(diretorio);
+        File[] files = baseFolder.listFiles();
+        for (File file : files) {
+            String name = file.getName();
+            listS.add(name);
+            System.out.println(name);
+        }
+        return listS;
+    }
+            
+    @WebMethod(operationName = "removerFotos")
+    public void removerFotos(@WebParam(name = "diretorio") String diretorio){
+        File dirFile = new File(diretorio); 
+        if (dirFile.isDirectory()) { 
+            File[] files = dirFile.listFiles();
+            for (File file : files) { 
+                file.delete(); 
+            }   
+        }
+    }
+                
+    @WebMethod(operationName = "removerDiretorio")
+    public void removerDiretorio(@WebParam(name = "diretorio") String diretorio) {
+        File dirFile = new File(diretorio); 
+        if (dirFile.isDirectory()) {       
+                removerFotos(diretorio);
+        }
+        dirFile.delete();
+    }
 }

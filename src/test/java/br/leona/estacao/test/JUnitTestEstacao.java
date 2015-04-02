@@ -40,20 +40,20 @@ public class JUnitTestEstacao {
 
     @Before
     public void setUp() {   
-        ligarCamera();
+     //   ligarCamera();
     //    controllServices.iniciarVideo();
-        controllServices.iniciarCaptura();
+     /*   controllServices.iniciarCaptura();
         try {
             Thread.sleep(1000);                 //1000 milliseconds is one second.
         } catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
-        }     
+        }     */
     }
 
     @After
     public void tearDown() {
-       controllServices.pararCaptura();
-       desligarCamera();
+    //   controllServices.pararCaptura();
+//       desligarCamera();
        //reset();
     }
     
@@ -82,12 +82,12 @@ public class JUnitTestEstacao {
         assertEquals(1, controllServices.desligar());
     }
     
-      //@Test
-     public void foto() {
-         System.out.println("oi: ");
-         List<String> lS = controllServices.retornarNomesFotos();
-         System.out.println("Fotos: "+lS);
-     }
+    //@Test
+    public void foto() {
+        System.out.println("oi: ");
+        List<String> lS = controllServices.retornarNomesFotos("C:\\ProjetoLeona\\Evento_20150401_153640");
+        System.out.println("Fotos: "+lS);
+    }
      
      @Test
      public void listaServicos() {    
@@ -99,16 +99,29 @@ public class JUnitTestEstacao {
         }
     }     
    
-    @Test
+    //@Test
     public void moverElevacao(){
           assertEquals("1", controllServices.moverElevacao(10));
     }
     
-     @Test
+     //@Test
     public void moverAzimute(){
           assertEquals("1", controllServices.moverAzimute(60));
     }
      
-  
+    //@Test
+    public void retornarNomesFotos(){        
+        controllServices.retornarNomesFotos("C:\\ProjetoLeona\\Evento_20150401_153640");
+    }
+    
+    //@Test
+    public void removerFotos(){        
+        controllServices.removerFotos("D:\\ProjetoLeona\\Evento_20150401_103444");
+    }
+    
+     @Test
+    public void removerDiretorio(){        
+        controllServices.removerDiretorio("D:\\ProjetoLeona\\Evento_20150401_153640");        
+    }       
 }
 
