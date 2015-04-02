@@ -114,7 +114,7 @@ public class JUnitTestEstacao {
         controllServices.retornarNomesFotos("C:\\ProjetoLeona\\Evento_20150401_153640");
     }
     
-    //@Test
+    @Test
     public void removerFotos(){        
         controllServices.removerFotos("D:\\ProjetoLeona\\Evento_20150401_103444");
     }

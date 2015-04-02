@@ -150,18 +150,16 @@ public class ControllerServices {
         File dirFile = new File(diretorio); 
         if (dirFile.isDirectory()) { 
             File[] files = dirFile.listFiles();
-            for (File file : files) { 
+            for (File file : files) 
                 file.delete(); 
-            }   
         }
     }
                 
     @WebMethod(operationName = "removerDiretorio")
     public void removerDiretorio(@WebParam(name = "diretorio") String diretorio) {
         File dirFile = new File(diretorio); 
-        if (dirFile.isDirectory()) {       
-                removerFotos(diretorio);
-        }
+        if (dirFile.isDirectory())
+            removerFotos(diretorio);
         dirFile.delete();
     }
 }
