@@ -15,6 +15,7 @@ import br.leona.hardware.model.Servico;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;  
 
 /**
  *
@@ -26,20 +27,48 @@ import java.util.List;
 public class ControllerServices {
     private static PTZController pantilt;   
     private static CameraController cameraControll;
-    
-    
+        
     public ControllerServices(){                      
         pantilt = new PTZController();               
-        cameraControll = new CameraController(1235); 
+        cameraControll = new CameraController(); 
     }
   
+    /**
+     * Operação de receber coord XYZ dos sensores.
+     *
+     * @return 
+     */
+    @WebMethod(operationName = "executarTrasnmissor")
+    public void executarTrasnmissor(int port) {  
+        try {  
+            String aplicativo = "java -jar D:/David3/camera/dist/camera.jar";  
+            Process processo = Runtime.getRuntime().exec(aplicativo);  
+        } catch (IOException e) {  
+            e.printStackTrace();  
+        }  
+    }  
+     /**
+     * Operação de receber coord XYZ dos sensores.
+     *
+     * @return coordXYZ
+     */
+    @WebMethod(operationName = "receberCoordXYZ")
+    public String receberCoordXYZ() {       
+        System.out.println("ws - receberCoordXYZ ");
+        String coordXYZ = pantilt.receberCoordXYZ();
+        System.out.println("lenght CoordXYZ: "+coordXYZ.length());
+        System.out.println("ultmo caracter: "+coordXYZ.charAt(coordXYZ.length()-1));
+        System.out.println("ws - receberCoordXYZ: "+coordXYZ);      
+        return coordXYZ;
+    }    
+    
     /**
      * Operação para iniciar a transmissao das imagens
      */
     @WebMethod(operationName = "iniciarTransmissao")
-    public void iniciarTransmissao() {
+    public void iniciarTransmissao(@WebParam(name = "porta") int porta) {
       System.out.println("ws - iniciar transmissão");
-      cameraControll.transmit();
+      cameraControll.transmit(porta);
     }
      
     /**
@@ -83,7 +112,7 @@ public class ControllerServices {
      * Operação de movimetação do pantilt azimute e elevação.
      *
      * @param graus
-     * @return
+     * @return status 
      */
     @WebMethod(operationName = "moverAzimute")
     public String moverAzimute(@WebParam(name = "graus") int graus) {
