@@ -34,7 +34,7 @@ public class ControllerServices {
     }
   
     /**
-     * Operação de receber coord XYZ dos sensores.
+     * Operação de executar swing transmissor.
      *
      * @return 
      */
