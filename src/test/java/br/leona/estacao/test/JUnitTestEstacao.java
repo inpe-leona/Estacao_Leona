@@ -79,7 +79,7 @@ public class JUnitTestEstacao {
   
     //@Test
     public void close() { // recebe 1 ou 0
-        assertEquals(1, controllServices.desligar());
+        //assertEquals(1, controllServices.desligar());
     }
     
     //@Test
