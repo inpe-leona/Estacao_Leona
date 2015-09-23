@@ -54,7 +54,7 @@ public class ControllerServices {
         System.out.println("ws - Iniciar Transmissor("+size+") IP"+IP+", porta: "+portaRTP);
         //String aplicativo =  "javaw -jar D:/NetBeansProjects/TransmitterController/dist/TransmitterController.jar "
         //                  + portaRTP; 
-        String aplicativo = "python C:\\Users\\Win76\\Documents\\Arch-Server-Polymorphic.py" ;//+IP+" "+portaRTP;
+        String aplicativo = "python C:\\Users\\Win76\\Documents\\Arch-Server-Polymorphic.py" ;// +" 0 "+IP+" "+portaRTP;
         try { 
             processosTrans.add(Runtime.getRuntime().exec(aplicativo));
         } catch (IOException ex) {
@@ -189,6 +189,7 @@ public class ControllerServices {
     */
     @WebMethod(operationName = "moverAzimute")
     public String moverAzimute(@WebParam(name = "graus") int graus) {
+        System.out.println("graus digitadoooooo:" + graus);
         return Integer.toString(pantilt.calculoAzimuteElevacao(graus, "azimute"));
         /*return "1";*/
     }
